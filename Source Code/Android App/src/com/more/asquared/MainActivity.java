@@ -48,6 +48,7 @@ public class MainActivity extends IOIOActivity implements SensorEventListener{
         
         // initialize your android device sensor capabilities
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        tvHeading.setText("Please Connect the IOIO");
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -73,8 +74,6 @@ public class MainActivity extends IOIOActivity implements SensorEventListener{
 
         // get the angle around the z-axis rotated
         degree = Math.round(event.values[0]);
-
-        //tvHeading.setText("Heading: " + degree + " degrees");
     }
     
     @Override
@@ -90,14 +89,20 @@ public class MainActivity extends IOIOActivity implements SensorEventListener{
 	 * be called repetitively until the IOIO gets disconnected.
 	 */
 	class Looper extends BaseIOIOLooper {
+		
 		/** The on-board LED. */
 		private DigitalOutput led_;
+		
+		/**
+		 * Initialization of required variables
+		 */
 		private int rxPin;
 		private int txPin;
 		private int baud;
 		private Uart uart;
 	    private InputStream in;
 	    private OutputStream out;
+	    private int requested;
 
 		/**
 		 * Called every time a connection with IOIO has been established.
@@ -137,14 +142,35 @@ public class MainActivity extends IOIOActivity implements SensorEventListener{
 		 */
 		@Override
 		public void loop() throws ConnectionLostException {
+			
+			/**Diagnostics
+			 * Used to determine if IOIO is responsive to commands sent by the android device
+			 */
+			
 			led_.write(!button_.isChecked());
 			
-
+			/**
+			 * Request Feature (Get request from IOIO and output required information)
+			 * 
+			 * Legend:
+			 * 
+			 * 1 -- Compass
+			 */
+			try {
+				if(in.available()!=0){
+				requested = in.read();
+				requested=requested-48;
+				}
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			
 			if(button_.isChecked()){
 		        runOnUiThread(new Runnable(){
 		            @Override
 		            public void run() {
-		                tvHeading.setText("Heading is " + degree);
+		                tvHeading.setText(String.valueOf(requested));
 
 		            }   
 		        });
@@ -152,16 +178,29 @@ public class MainActivity extends IOIOActivity implements SensorEventListener{
 		        runOnUiThread(new Runnable(){
 		            @Override
 		            public void run() {
-		                tvHeading.setText("Heading is " + degree);
+		                tvHeading.setText(requested + " lol");
 
-		            }   
+		            }
 		        });
 			}
-			//tvHeading.setText("degree");
-//	        tvHeading.setText("Heading: " + degree + " degrees");
-			int temporary = degree;
-			int digits = 0; while (temporary != 0) { temporary /= 10; digits++; }
-			if(digits==1){
+			
+
+			
+			/**
+			 * Constant compass output initial demo code for INVENT Programme 2013 
+			 */
+			int marker = 0;
+			int lolcats = degree;
+			//int temporary = degree;
+			//int digits = 0; while (temporary != 0) { temporary /= 10; digits++; }
+			if(lolcats==0){
+				lolcats=360;
+			}
+			if(lolcats>255){
+				marker = 1;
+				lolcats=lolcats-255;
+			}
+			/*if(digits==1){
 				try {
 					out.write((int)0);
 					out.write((int)0);
@@ -180,13 +219,29 @@ public class MainActivity extends IOIOActivity implements SensorEventListener{
 				}
 				
 			}else{
+				if (marker==1){
+					try {
+						out.write(0);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}*/
+			if (marker==1){
 				try {
-					out.write(degree);
-				} catch (IOException e1) {
+					out.write(0);
+				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					e.printStackTrace();
 				}
 			}
+			try {
+				out.write(lolcats);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			//}
 	        
 			try {
 				Thread.sleep(100);

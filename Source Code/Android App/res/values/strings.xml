@@ -3,6 +3,6 @@
 
     <string name="app_name">ASquared</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">AARDK: Arduino-Android Robotics Development Kit</string>
 
 </resources>

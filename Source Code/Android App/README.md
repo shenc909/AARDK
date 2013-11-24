@@ -1,4 +1,4 @@
-This is the source code for the Arduino-Android Robotics Development Kit.
+This is the Android app source code for the AARDK.
 
-These files are for the Android Development Kit Eclipse and require the IOIO library that can be found on this page:
+You will need the IOIO library which can be found here:
 https://github.com/ytai/ioio
