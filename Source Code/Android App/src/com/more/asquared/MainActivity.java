@@ -51,14 +51,16 @@ public class MainActivity extends IOIOActivity implements SensorEventListener{
         tvHeading.setText("Please Connect the IOIO");
 	}
 	
+	/**
+	 * This is where we set up our sensors for use later. This includes onPause, onResume, onSensorChanged and onAccuracyChanged.
+	 */
 	@SuppressWarnings("deprecation")
 	@Override
     protected void onResume() {
         super.onResume();
 
         // for the system's orientation sensor registered listeners
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                SensorManager.SENSOR_DELAY_GAME);
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_GAME);
     }
 	
     @Override
@@ -131,7 +133,6 @@ public class MainActivity extends IOIOActivity implements SensorEventListener{
 
 		}
 
-
 		/**
 		 * Called repetitively while the IOIO is connected.
 		 * 
@@ -143,10 +144,10 @@ public class MainActivity extends IOIOActivity implements SensorEventListener{
 		@Override
 		public void loop() throws ConnectionLostException {
 			
-			/**Diagnostics
-			 * Used to determine if IOIO is responsive to commands sent by the android device
-			 */
-			
+			/**
+			* Diagnostics
+			* Used to determine if IOIO is responsive to commands sent by the android device
+			*/
 			led_.write(!button_.isChecked());
 			
 			/**
@@ -161,88 +162,51 @@ public class MainActivity extends IOIOActivity implements SensorEventListener{
 				requested = in.read();
 				requested=requested-48;
 				}
+				if(button_.isChecked()){
+			        runOnUiThread(new Runnable(){
+			            @Override
+			            public void run() {
+			                tvHeading.setText(String.valueOf(requested));
+
+			            }   
+			        });
+				}else{
+			        runOnUiThread(new Runnable(){
+			            @Override
+			            public void run() {
+			                tvHeading.setText(requested + " lol");
+
+			            }
+			        });
+				}
+				
+				switch (requested) {
+					case 1:
+						int marker = 0;
+						int tempp = degree;
+						if(tempp==0){
+                            tempp=360;
+						}
+						if(tempp>255){
+                            marker = 1;
+                            tempp=tempp-255;
+						}
+						
+						if (marker==1){
+                            out.write(0);
+						}
+						out.write(tempp);
+						break;
+				}
+				
 			} catch (IOException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
 			
-			if(button_.isChecked()){
-		        runOnUiThread(new Runnable(){
-		            @Override
-		            public void run() {
-		                tvHeading.setText(String.valueOf(requested));
-
-		            }   
-		        });
-			}else{
-		        runOnUiThread(new Runnable(){
-		            @Override
-		            public void run() {
-		                tvHeading.setText(requested + " lol");
-
-		            }
-		        });
-			}
-			
-
-			
 			/**
-			 * Constant compass output initial demo code for INVENT Programme 2013 
+			 * Pauses code for a while lol
 			 */
-			int marker = 0;
-			int lolcats = degree;
-			//int temporary = degree;
-			//int digits = 0; while (temporary != 0) { temporary /= 10; digits++; }
-			if(lolcats==0){
-				lolcats=360;
-			}
-			if(lolcats>255){
-				marker = 1;
-				lolcats=lolcats-255;
-			}
-			/*if(digits==1){
-				try {
-					out.write((int)0);
-					out.write((int)0);
-					out.write(degree);
-				} catch (IOException e3) {
-					// TODO Auto-generated catch block
-					e3.printStackTrace();
-				}
-			}else if(digits==2){
-				try {
-					out.write((int)0);
-					out.write(degree);
-				} catch (IOException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-				
-			}else{
-				if (marker==1){
-					try {
-						out.write(0);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}*/
-			if (marker==1){
-				try {
-					out.write(0);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			try {
-				out.write(lolcats);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			//}
-	        
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
