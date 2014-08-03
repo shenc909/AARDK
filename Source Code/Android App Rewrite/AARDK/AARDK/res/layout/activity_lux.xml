@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/compass_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/compass"
+        android:onClick="compassStart" />
+
+    <ImageView
+        android:id="@+id/accel_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/compass_img"
+        android:layout_below="@+id/compass_img"
+        android:layout_marginTop="10dp"
+        android:onClick="accelStart"
+        android:src="@drawable/accel" />
+
+    <ImageView
+        android:id="@+id/proximity_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/accel_img"
+        android:layout_below="@+id/accel_img"
+        android:layout_marginTop="10dp"
+        android:onClick="proximityStart"
+        android:src="@drawable/proximity" />
+
+    <ImageView
+        android:id="@+id/lux_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/proximity_img"
+        android:layout_below="@+id/proximity_img"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/luxsel" />
+
+    <ImageView
+        android:id="@+id/magnet_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lux_img"
+        android:layout_below="@+id/lux_img"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/magnet"
+        android:onClick="magnetStart" />
+
+    <ImageView
+        android:id="@+id/bg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignLeft="@+id/compass_img"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/bg" />
+
+    <ImageView
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/magnet_img"
+        android:layout_below="@+id/magnet_img"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/add" />
+    
+    <TextView
+        android:id="@+id/lux_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/bg"
+        android:layout_alignTop="@+id/compass_img"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:text="LIGHT"
+        android:fontFamily="sans-serif-light"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/luxtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lux_title"
+        android:layout_below="@+id/lux_title"
+        android:layout_marginTop="13dp"
+        android:text="Light Intensity:"
+        android:fontFamily="sans-serif-thin" 
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <TextView
+        android:id="@+id/lux"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/luxtext"
+        android:layout_below="@+id/luxtext"
+        android:text="Waiting for values..."
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>
